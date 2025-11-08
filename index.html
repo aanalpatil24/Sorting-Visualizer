@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sorting Visualizer</title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="./css/styles.css" />
+</head>
+<body>
+  <!-- Heading -->
+  <main class="container-fluid">
+    <h1 class="visualizer-title">🔹 Sorting Algorithm Visualizer 🔹</h1>
+
+    <!-- Array Visualization Section -->
+    <div class="container">
+      <div id="array"></div>
+    </div>
+  </main>
+
+  <!-- Control Panel (Fixed to bottom of viewport) -->
+  <div class="controls-section">
+    <div class="container-fluid">
+      <div class="row align-items-center justify-content-between text-center">
+        <!-- Array Settings -->
+        <div class="col-md-4 mb-2">
+          <button class="btn btn-custom btn-lg mb-2" id="generateArray">
+            🔁 Generate New Array
+          </button>
+          <div class="sliders-container">
+            <label for="arraySize" class="labels">Size:</label>
+            <input type="range" id="arraySize" min="5" max="50" step= "5" value="10" />
+            <label for="speed" class="labels">Speed:</label>
+            <input type="range" id="speed" min="1" max="10" step="1" value="5" />
+          </div>
+        </div>
+
+        <!-- Algorithm Buttons -->
+        <div class="col-md-8 mb-2 d-flex flex-wrap justify-content-center">
+          <button id="bubbleSort" class="btn btn-custom m-2">Bubble Sort</button>
+          <button id="selectionSort" class="btn btn-custom m-2">Selection Sort</button>
+          <button id="insertionSort" class="btn btn-custom m-2">Insertion Sort</button>
+          <button id="quickSort" class="btn btn-custom m-2">Quick Sort</button>
+          <button id="mergeSort" class="btn btn-custom m-2">Merge Sort</button>
+        </div>
+      </div>
+      
+      <!-- Footer inside controls section -->
+      <div class="row">
+          <div class="col-12">
+              <footer>
+                Created By <a href="#home">Anal Patil</a> | &#169; 2025 All Rights Reserved
+              </footer>   
+          </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- JS Dependencies (jQuery/Bootstrap) -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+
+  <!-- Custom Scripts (MUST be in this order at the END of body) -->
+  <script src="./js/global_variables.js"></script>
+  <script src="./js/utils.js"></script>
+  <script src="./js/main.js"></script>
+  <script src="./js/bubbleSort.js"></script>
+  <script src="./js/selectionSort.js"></script>
+  <script src="./js/insertionSort.js"></script>
+  <script src="./js/mergeSort.js"></script>
+  <script src="./js/quickSort.js"></script>
+</body>
+</html>

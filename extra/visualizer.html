@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sorting Visualizer</title>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" />
+  <style>
+    /* --- CSS STYLES --- */
+    :root {
+      --bg-main: #0f172a;
+      --bg-panel: #1e293b;
+      --color-text: #f8fafc;
+      --color-highlight: #38bdf8;
+      --color-primary: #3b82f6;
+      --color-primary-hover: #2563eb;
+      --color-sorted: #22c55e;
+      --color-processing: #facc15;
+      --color-swapping: #ef4444;
+      --color-btn-active: #4c1d95; /* Darker purple for active state */
+    }
+
+    body {
+      background: var(--bg-main);
+      color: var(--color-text);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      min-height: 100vh;
+      padding-bottom: 280px; 
+      position: relative;
+    }
+
+    .visualizer-title {
+      text-align: center;
+      font-size: 2.5rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: var(--color-highlight);
+      margin-top: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    #array {
+      height: 450px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      background: var(--bg-panel);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 2rem;
+      box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+      transition: all 0.3s ease;
+    }
+
+    .bar {
+      background-color: var(--color-primary);
+      margin: 0 1px;
+      border-radius: 3px 3px 0 0;
+    }
+
+    .controls-section {
+      background: var(--bg-panel);
+      border-top: 1px solid #334155;
+      padding: 1.5rem 1rem 0.5rem 1rem;
+      border-radius: 16px 16px 0 0;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.3);
+      max-height: 300px;
+      overflow-y: auto;
+    }
+
+    .labels {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #cbd5e1;
+      margin: 0 10px;
+      text-transform: uppercase;
+    }
+
+    .sliders-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    input[type="range"] {
+      width: 120px;
+      accent-color: var(--color-primary);
+      cursor: pointer;
+    }
+
+    .btn-custom {
+      background-color: var(--color-primary);
+      border: none;
+      color: white;
+      font-weight: 600;
+      border-radius: 8px;
+      padding: 10px 24px;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+    }
+
+    .btn-custom:hover:not(:disabled) {
+      background-color: var(--color-primary-hover);
+      transform: translateY(-2px);
+      color: white;
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+    }
+
+    .btn-custom:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+
+    /* Active button state */
+    .btn-custom.btn-active {
+        background-color: var(--color-btn-active) !important;
+        box-shadow: inset 0 3px 5px rgba(0,0,0,0.2) !important;
+        transform: translateY(1px) !important;
+        opacity: 1 !important;
+    }
+
+    footer {
+      text-align: center;
+      color: #64748b;
+      padding-top: 1rem;
+      margin-top: 0.5rem;
+      border-top: 1px solid #334155;
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 768px) {
+      .visualizer-title { font-size: 1.8rem; margin-top: 1rem; }
+      #array { height: 300px; }
+      .btn-custom { font-size: 0.9rem; padding: 8px 16px; margin: 5px !important; }
+      body { padding-bottom: 320px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="container-fluid">
+    <h1 class="visualizer-title">🔹 Sorting Algorithm Visualizer 🔹</h1>
+    <div class="container">
+      <div id="array"></div>
+    </div>
+  </main>
+
+  <div class="controls-section">
+    <div class="container-fluid">
+      <div class="row align-items-center justify-content-between text-center">
+        <div class="col-md-4 mb-2">
+          <button class="btn btn-custom btn-lg mb-2" id="generateArray">
+            🔁 Generate New Array
+          </button>
+          <div class="sliders-container">
+            <label for="arraySize" class="labels">Size:</label>
+            <input type="range" id="arraySize" min="5" max="100" value="50" />
+            <label for="speed" class="labels">Speed:</label>
+            <input type="range" id="speed" min="1" max="5" step="1" value="4" />
+          </div>
+        </div>
+        <div class="col-md-8 mb-2 d-flex flex-wrap justify-content-center">
+          <button id="bubbleSort" class="btn btn-custom m-2">Bubble Sort</button>
+          <button id="selectionSort" class="btn btn-custom m-2">Selection Sort</button>
+          <button id="insertionSort" class="btn btn-custom m-2">Insertion Sort</button>
+          <button id="quickSort" class="btn btn-custom m-2">Quick Sort</button>
+          <button id="mergeSort" class="btn btn-custom m-2">Merge Sort</button>
+        </div>
+      </div>
+      <div class="row">
+          <div class="col-12">
+              <footer>Built by <strong>Anal Patil</strong></footer>
+          </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Single Script Block -->
+  <script>
+    // --- Global Variables ---
+    const arrayContainer = document.getElementById("array");
+    const generateArrayBtn = document.getElementById("generateArray");
+    const arraySizeSlider = document.getElementById("arraySize");
+    const speedSlider = document.getElementById("speed");
+    const bubbleSortBtn = document.getElementById("bubbleSort");
+    const selectionSortBtn = document.getElementById("selectionSort");
+    const insertionSortBtn = document.getElementById("insertionSort");
+    const quickSortBtn = document.getElementById("quickSort");
+    const mergeSortBtn = document.getElementById("mergeSort");
+
+    let delay = 0;
+    let timeGap = 50;
+    let elements = [];
+    let heights = [];
+    let size = parseInt(arraySizeSlider.value) || 50;
+
+    const COLORS = {
+      base: "#3b82f6", processing: "#facc15", swapping: "#ef4444", sorted: "#22c55e"
+    };
+    const SORT_COLORS = {
+        bubble: "#8b5cf6", selection: "#ec4899", insertion: "#f97316", quick: "#0ea5e9", merge: "#14b8a6"
+    };
+
+    // --- Utils ---
+    function resetDelay() { delay = 0; }
+    function setHeights() {
+      heights = [];
+      for (let i = 0; i < size; i++) heights.push(parseInt(elements[i].style.height));
+    }
+    function updateBars(el1, el2, height1, height2, color) {
+      window.setTimeout(() => {
+        if (el1) { el1.style.height = `${height1}px`; el1.style.backgroundColor = color; }
+        if (el2) { el2.style.height = `${height2}px`; el2.style.backgroundColor = color; }
+      }, (delay += timeGap));
+    }
+    function updateColor(element, color) {
+      window.setTimeout(() => { if (element) element.style.backgroundColor = color; }, (delay += timeGap));
+    }
+    function updateAllColors(start, end, color) {
+      window.setTimeout(() => {
+        for (let i = start; i <= end; i++) if (elements[i]) elements[i].style.backgroundColor = color;
+      }, (delay += timeGap));
+    }
+    function disableControls(activeButton) {
+      [generateArrayBtn, arraySizeSlider, speedSlider, bubbleSortBtn, selectionSortBtn, insertionSortBtn, quickSortBtn, mergeSortBtn].forEach(c => {
+          c.disabled = true;
+          if (c === activeButton) c.classList.add("btn-active");
+      });
+    }
+    function enableControls() {
+      [generateArrayBtn, arraySizeSlider, speedSlider, bubbleSortBtn, selectionSortBtn, insertionSortBtn, quickSortBtn, mergeSortBtn].forEach(c => {
+          c.disabled = false;
+          c.classList.remove("btn-active");
+      });
+    }
+
+    // --- Main ---
+    generateArrayBtn.addEventListener("click", generateArray);
+    arraySizeSlider.addEventListener("input", updateArraySize);
+    speedSlider.addEventListener("input", updateSpeed);
+    window.onload = () => { updateSpeed(); generateArray(); };
+
+    function generateArray() {
+      arrayContainer.innerHTML = "";
+      const containerWidth = arrayContainer.clientWidth - 40;
+      const barWidth = Math.max(2, Math.floor(containerWidth / size) - 2);
+      for (let i = 0; i < size; i++) {
+        const height = Math.floor(Math.random() * 400) + 20;
+        const bar = document.createElement("div");
+        bar.classList.add("bar");
+        bar.style.height = `${height}px`;
+        bar.style.width = `${barWidth}px`;
+        bar.style.backgroundColor = COLORS.base;
+        arrayContainer.appendChild(bar);
+      }
+      elements = arrayContainer.children;
+    }
+    function updateArraySize() { size = parseInt(arraySizeSlider.value); generateArray(); }
+    function updateSpeed() {
+      const val = parseInt(speedSlider.value);
+      switch(val) { case 1: timeGap = 200; break; case 2: timeGap = 100; break; case 3: timeGap = 50; break; case 4: timeGap = 20; break; case 5: timeGap = 5; break; default: timeGap = 50; }
+    }
+
+    // --- Algorithms ---
+     
+      // --- 1. Bubble Sorting ---
+    bubbleSortBtn.addEventListener("click", function() {
+      disableControls(this); resetDelay(); setHeights();
+      updateAllColors(0, size - 1, SORT_COLORS.bubble);
+      bubbleSort(); window.setTimeout(enableControls, delay);
+    });
+    function bubbleSort() {
+      for (let i = 0; i < size - 1; i++) {
+        for (let j = 0; j < size - i - 1; j++) {
+          updateBars(elements[j], elements[j + 1], heights[j], heights[j + 1], COLORS.processing);
+          if (heights[j] > heights[j + 1]) {
+            [heights[j], heights[j + 1]] = [heights[j + 1], heights[j]];
+            updateBars(elements[j], elements[j + 1], heights[j], heights[j + 1], COLORS.swapping);
+          }
+          updateBars(elements[j], elements[j + 1], heights[j], heights[j + 1], SORT_COLORS.bubble);
+        }
+        updateColor(elements[size - 1 - i], COLORS.sorted);
+      }
+      updateColor(elements[0], COLORS.sorted);
+    }
+       
+         // --- 2. Selection Sorting ---
+    selectionSortBtn.addEventListener("click", function() {
+      disableControls(this); resetDelay(); setHeights();
+      updateAllColors(0, size - 1, SORT_COLORS.selection);
+      selectionSort(); window.setTimeout(enableControls, delay);
+    });
+    function selectionSort() {
+      for (let i = 0; i < size - 1; i++) {
+        let minIndex = i;
+        updateColor(elements[i], COLORS.swapping);
+        for (let j = i + 1; j < size; j++) {
+          updateColor(elements[j], COLORS.processing);
+          if (heights[j] < heights[minIndex]) {
+            if (minIndex !== i) updateColor(elements[minIndex], SORT_COLORS.selection);
+            minIndex = j;
+            updateColor(elements[minIndex], COLORS.swapping);
+          } else { updateColor(elements[j], SORT_COLORS.selection); }
+        }
+        if (minIndex !== i) {
+          [heights[i], heights[minIndex]] = [heights[minIndex], heights[i]];
+          updateBars(elements[i], elements[minIndex], heights[i], heights[minIndex], COLORS.swapping);
+          updateColor(elements[minIndex], SORT_COLORS.selection);
+        }
+        updateColor(elements[i], COLORS.sorted);
+      }
+      updateColor(elements[size - 1], COLORS.sorted);
+    }
+ 
+        // --- 3. Insertion Sorting ---
+    insertionSortBtn.addEventListener("click", function() {
+      disableControls(this); resetDelay(); setHeights();
+      updateAllColors(0, size - 1, SORT_COLORS.insertion);
+      insertionSort(); window.setTimeout(enableControls, delay);
+    });
+    function insertionSort() {
+      for (let i = 1; i < size; i++) {
+        let currentVal = heights[i];
+        let j = i - 1;
+        updateColor(elements[i], COLORS.swapping);
+        while (j >= 0 && heights[j] > currentVal) {
+          updateBars(elements[j], elements[j + 1], heights[j], heights[j], COLORS.processing);
+          heights[j + 1] = heights[j];
+          j--;
+        }
+        heights[j + 1] = currentVal;
+        updateBars(elements[j + 1], elements[i], heights[j + 1], currentVal, SORT_COLORS.insertion);
+        for(let k = 0; k <= i; k++) updateColor(elements[k], COLORS.sorted); // Imperfect but visually ok
+      }
+      updateAllColors(0, size-1, COLORS.sorted);
+    }
+
+         // --- 4. Merge Sorting ---
+    mergeSortBtn.addEventListener("click", function() {
+      disableControls(this); resetDelay(); setHeights();
+      updateAllColors(0, size - 1, SORT_COLORS.merge);
+      mergeSort(0, size - 1); window.setTimeout(enableControls, delay);
+    });
+    function mergeSort(start, end) {
+      if (start < end) {
+        const mid = Math.floor((start + end) / 2);
+        mergeSort(start, mid); mergeSort(mid + 1, end); merge(start, mid, end);
+      }
+    }
+    function merge(start, mid, end) {
+      let temp = [], i = start, j = mid + 1;
+      updateAllColors(start, end, COLORS.processing);
+      while (i <= mid && j <= end) { if (heights[i] <= heights[j]) temp.push(heights[i++]); else temp.push(heights[j++]); }
+      while (i <= mid) temp.push(heights[i++]);
+      while (j <= end) temp.push(heights[j++]);
+      for (let k = 0; k < temp.length; k++) {
+        heights[start + k] = temp[k];
+        updateBars(elements[start + k], elements[start + k], temp[k], temp[k], SORT_COLORS.merge);
+      }
+    }
+
+       // --- 5. Quick Sorting ---
+    quickSortBtn.addEventListener("click", function() {
+      disableControls(this); resetDelay(); setHeights();
+      updateAllColors(0, size - 1, SORT_COLORS.quick);
+      quickSort(0, size - 1);
+      window.setTimeout(() => { updateAllColors(0, size - 1, COLORS.sorted); enableControls(); }, delay);
+    });
+    function quickSort(start, end) {
+      if (start < end) {
+        const pivotIdx = partition(start, end);
+        quickSort(start, pivotIdx - 1); quickSort(pivotIdx + 1, end);
+      }
+    }
+    function partition(start, end) {
+      const pivotValue = heights[end];
+      let pivotIndex = start;
+      updateColor(elements[end], COLORS.swapping);
+      for (let i = start; i < end; i++) {
+        updateColor(elements[i], COLORS.processing);
+        if (heights[i] < pivotValue) {
+          updateBars(elements[i], elements[pivotIndex], heights[i], heights[pivotIndex], COLORS.swapping);
+          [heights[i], heights[pivotIndex]] = [heights[pivotIndex], heights[i]];
+          updateBars(elements[i], elements[pivotIndex], heights[i], heights[pivotIndex], SORT_COLORS.quick);
+          pivotIndex++;
+        } else { updateColor(elements[i], SORT_COLORS.quick); }
+      }
+      updateBars(elements[end], elements[pivotIndex], heights[end], heights[pivotIndex], COLORS.swapping);
+      [heights[end], heights[pivotIndex]] = [heights[pivotIndex], heights[end]];
+      updateBars(elements[end], elements[pivotIndex], heights[end], heights[pivotIndex], SORT_COLORS.quick);
+      return pivotIndex;
+    }
+  </script>
+</body>
+</html>
