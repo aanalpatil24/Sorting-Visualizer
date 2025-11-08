@@ -6,7 +6,8 @@ Perfect for students, educators, and anyone curious about how sorting actually h
 ---
 
 ## Features
-
+<details>
+  <Summary> Click on the Feauters</Summary>
 - Multiple Algorithms Supported
   - Bubble Sort  
   - Selection Sort  
@@ -27,7 +28,7 @@ Perfect for students, educators, and anyone curious about how sorting actually h
 
 - Educational & Engagin
   - Perfect for learning sorting logic through live animation.
-
+</details>
 ---
 
 ## Tech Stack
