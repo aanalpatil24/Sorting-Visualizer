@@ -77,6 +77,27 @@ body {
   text-transform: uppercase;
 }
 
+.labels {
+    .value-badge {
+  display: inline-block;
+  background: #2563eb;
+  color: white;
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-left: 8px;
+  min-width: 30px;
+  text-align: center;
+  transition: background 0.3s ease;
+}
+
+.value-badge:hover {
+  background: #1e40af;
+}
+
+}
+
 .sliders-container {
     display: flex;
     align-items: center;
