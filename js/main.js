@@ -41,10 +41,32 @@ function updateSpeed() {
   // Map slider 1-5 to appropriate millisecond delays
   switch(val) {
       case 1: timeGap = 200; break; // Slow
-      case 2: timeGap = 100; break;
-      case 3: timeGap = 50; break;
-      case 4: timeGap = 20; break;
-      case 5: timeGap = 5; break;   // Fast
+      case 2: timeGap = 150; break;
+      case 3: timeGap = 125; break;
+      case 4: timeGap = 100; break;
+      case 5: timeGap = 75; break;
+      case 6: timeGap = 50; break;
+      case 7: timeGap = 30; break;
+      case 8: timeGap = 20; break;
+      case 9: timeGap = 10; break;
+      case 10: timeGap = 5; break;    // Fast
       default: timeGap = 50;
   }
 }
+
+// Get display elements
+const arraySizeDisplay = document.getElementById("arraySizeValue");
+const speedDisplay = document.getElementById("speedValue");
+
+// Update array size dynamically
+arraySizeSlider.addEventListener("input", () => {
+  arraySizeDisplay.textContent = arraySizeSlider.value;
+  size = parseInt(arraySizeSlider.value);
+  generateArray();
+});
+
+// Update speed dynamically
+speedSlider.addEventListener("input", () => {
+  speedDisplay.textContent = speedSlider.value;
+  updateSpeed();
+});
