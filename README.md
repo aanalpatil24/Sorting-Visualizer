@@ -44,7 +44,8 @@ An **interactive web-based tool** to visualize and understand how popular sortin
 <img width="1920" height="1080" alt="home" src="https://github.com/user-attachments/assets/325b70f3-fcd6-4eda-90f3-303ab1ec6a51" />
 <img width="1920" height="1080" alt="selection" src="https://github.com/user-attachments/assets/bcb0a838-7954-4798-bceb-539de527ddce" />
 <img width="1920" height="1080" alt="process" src="https://github.com/user-attachments/assets/92bdbf31-e071-49d6-b1a3-d33005eba43b" />
-![Uploading result.png…]()
+<img width="1920" height="1080" alt="result" src="https://github.com/user-attachments/assets/23cb5bbd-3f1b-416a-8846-f024c9e83123" />
+
 </details>
 ---
 
